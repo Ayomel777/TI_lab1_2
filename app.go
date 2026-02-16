@@ -10,6 +10,8 @@ type App struct {
 	ctx context.Context
 }
 
+const RussianAlphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+
 // NewApp creates a new App application struct
 func NewApp() *App {
 	return &App{}
@@ -28,20 +30,41 @@ func (a *App) Encrypt(plaintext, key string) string {
 	keyRunes := []rune(key)
 	result := make([]rune, len(plaintext))
 	keyIndex := 0
+	alphabet := []rune(RussianAlphabet)
+	alphabetLen := len(alphabet)
 
 	for i, ch := range plaintext {
-		if ch < 'A' || ch > 'Z' {
+		chIndex := -1
+		for idx, letter := range alphabet {
+			if letter == ch {
+				chIndex = idx
+				break
+			}
+		}
+
+		if chIndex == -1 {
 			result[i] = ch
 			continue
 		}
 
 		currentKeyChar := keyRunes[keyIndex]
-		keyVal := int(currentKeyChar - 'A')
+		keyIdx := -1
+		for idx, letter := range alphabet {
+			if letter == currentKeyChar {
+				keyIdx = idx
+				break
+			}
+		}
+		if keyIdx == -1 {
+			result[i] = ch
+			continue
+		}
 
-		encrypted := (int(ch-'A') + keyVal) % 26
-		result[i] = rune(encrypted) + 'A'
+		encryptedIdx := (chIndex + keyIdx) % alphabetLen
+		result[i] = alphabet[encryptedIdx]
 
-		keyRunes[keyIndex] = rune((int(currentKeyChar-'A')+1)%26 + 'A')
+		newKeyIdx := (keyIdx + 1) % alphabetLen
+		keyRunes[keyIndex] = alphabet[newKeyIdx]
 
 		keyIndex = (keyIndex + 1) % len(keyRunes)
 	}
@@ -56,23 +79,44 @@ func (a *App) Decrypt(ciphertext, key string) string {
 	keyRunes := []rune(key)
 	result := make([]rune, len(ciphertext))
 	keyIndex := 0
+	alphabet := []rune(RussianAlphabet)
+	alphabetLen := len(alphabet)
 
 	for i, ch := range ciphertext {
-		if ch < 'A' || ch > 'Z' {
+		chIndex := -1
+		for idx, letter := range alphabet {
+			if letter == ch {
+				chIndex = idx
+				break
+			}
+		}
+
+		if chIndex == -1 {
 			result[i] = ch
 			continue
 		}
 
 		currentKeyChar := keyRunes[keyIndex]
-		keyVal := int(currentKeyChar - 'A')
-
-		decrypted := (int(ch-'A') - keyVal) % 26
-		if decrypted < 0 {
-			decrypted += 26
+		keyIdx := -1
+		for idx, letter := range alphabet {
+			if letter == currentKeyChar {
+				keyIdx = idx
+				break
+			}
 		}
-		result[i] = rune(decrypted) + 'A'
+		if keyIdx == -1 {
+			result[i] = ch
+			continue
+		}
 
-		keyRunes[keyIndex] = rune((int(currentKeyChar-'A')+1)%26 + 'A')
+		decryptedIdx := (chIndex - keyIdx) % alphabetLen
+		if decryptedIdx < 0 {
+			decryptedIdx += alphabetLen
+		}
+		result[i] = alphabet[decryptedIdx]
+
+		newKeyIdx := (keyIdx + 1) % alphabetLen
+		keyRunes[keyIndex] = alphabet[newKeyIdx]
 
 		keyIndex = (keyIndex + 1) % len(keyRunes)
 	}

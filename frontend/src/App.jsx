@@ -7,12 +7,12 @@ function App() {
     const [keyword, setKeyword] = useState('');
 
     const handleInputChange = (e) => {
-        const value = e.target.value.replace(/[^a-zA-Z]/g, '');
+        const value = e.target.value.replace(/[^а-яА-ЯёЁ]/g, '');
         setInputText(value.toUpperCase());
     };
 
     const handleKeywordChange = (e) => {
-        const value = e.target.value.replace(/[^a-zA-Z]/g, '');
+        const value = e.target.value.replace(/[^а-яА-ЯёЁ]/g, '');
         setKeyword(value.toUpperCase());
     };
 
@@ -35,7 +35,7 @@ function App() {
             alert(content);
             return;
         }
-        const cleanText = content.replace(/[^a-zA-Z]/g, '').toUpperCase();
+        const cleanText = content.replace(/[^а-яА-ЯёЁ]/g, '').toUpperCase();
         setInputText(cleanText);
     };
 
@@ -51,7 +51,7 @@ function App() {
 
     return (
         <div className="app">
-            <h1>🔐 PROGRESSIVE VIGENERE CIPHER</h1>
+            <h1>🔐 ПРОГРЕССИВНЫЙ ШИФР ВИЖЕНЕРА</h1>
             <p className="subtitle">Каждая буква ключа увеличивается на 1 после использования</p>
 
             <div className="row">
@@ -59,7 +59,7 @@ function App() {
                     type="text"
                     value={keyword}
                     onChange={handleKeywordChange}
-                    placeholder="KEYWORD"
+                    placeholder="КЛЮЧЕВОЕ СЛОВО"
                     className="keyword"
                     maxLength={20}
                 />
@@ -69,25 +69,25 @@ function App() {
                 <textarea
                     value={inputText}
                     onChange={handleInputChange}
-                    placeholder="INPUT TEXT"
+                    placeholder="ИСХОДНЫЙ ТЕКСТ"
                     className="textarea"
                     rows={5}
                 />
             </div>
 
             <div className="buttons">
-                <button onClick={handleEncrypt} className="btn encrypt">ENCRYPT</button>
-                <button onClick={handleDecrypt} className="btn decrypt">DECRYPT</button>
-                <button onClick={handleReadFile} className="btn file">📂 OPEN</button>
-                <button onClick={handleSaveFile} className="btn save">💾 SAVE</button>
-                <button onClick={handleClear} className="btn clear">🗑️ CLEAR</button>
+                <button onClick={handleEncrypt} className="btn encrypt">ЗАШИФРОВАТЬ</button>
+                <button onClick={handleDecrypt} className="btn decrypt">РАСШИФРОВАТЬ</button>
+                <button onClick={handleReadFile} className="btn file">📂 ОТКРЫТЬ</button>
+                <button onClick={handleSaveFile} className="btn save">💾 СОХРАНИТЬ</button>
+                <button onClick={handleClear} className="btn clear">🗑️ ОЧИСТИТЬ</button>
             </div>
 
             <div className="row">
                 <textarea
                     value={outputText}
                     readOnly
-                    placeholder="OUTPUT TEXT"
+                    placeholder="РЕЗУЛЬТАТ"
                     className="textarea output"
                     rows={5}
                 />
