@@ -1,19 +1,49 @@
-# README
+# 📘 **README - Progressive Vigenère Cipher**
 
-## About
+### 📌 **О проекте**
+Десктопное приложение на Wails для шифрования/дешифрования текста **алгоритмом Виженера с прогрессивным ключом** (каждая буква ключа увеличивается на 1 после использования).
 
-This is the official Wails React template.
+---
 
-You can configure the project by editing `wails.json`. More information about the project settings can be found
-here: https://wails.io/docs/reference/project-config
+### 📁 **Структура**
 
-## Live Development
+```
+main.go              # Точка входа
+app.go               # ОСНОВНАЯ ЛОГИКА (Encrypt/Decrypt, файлы)
+frontend/App.jsx     # Интерфейс
+```
 
-To run in live development mode, run `wails dev` in the project directory. This will run a Vite development
-server that will provide very fast hot reload of your frontend changes. If you want to develop in a browser
-and have access to your Go methods, there is also a dev server that runs on http://localhost:34115. Connect
-to this in your browser, and you can call your Go code from devtools.
+---
 
-## Building
+### 🔐 **Где реализована основная логика**
 
-To build a redistributable, production mode package, use `wails build`.
+**Весь криптоалгоритм находится в `app.go`:**
+
+| Метод | Описание |
+|-------|----------|
+| `Encrypt(plaintext, key)` | Шифрование с прогрессивным ключом |
+| `Decrypt(ciphertext, key)` | Дешифрование |
+| `OpenFile()` | Загрузка из файла |
+| `SaveFile()` | Сохранение в файл |
+
+**Принцип работы:**
+- Каждая буква ключа увеличивается на 1 сразу после использования
+- При достижении 'Z' происходит циклический переход к 'A'
+- Небуквенные символы игнорируются
+
+---
+
+### 🛠 **Сборка**
+
+```bash
+wails build
+```
+
+Готовый `.exe` в `build/bin/`
+
+---
+
+### ✅ **Требования**
+- Только английские буквы (A-Z)
+- Ключевое слово (любой длины)
+- Регистр не важен (всё приводится к верхнему)
